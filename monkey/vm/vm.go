@@ -266,3 +266,9 @@ func (vm *VM) executeMinusOperator() error {
 	value := operand.(*object.Integer).Value
 	return vm.push(&object.Integer{Value: -value})
 }
+
+func NewWithGlobalsStore(bytecode *compiler.Bytecode, s []object.Object) *VM {
+	vm := New(bytecode)
+	vm.globals = s
+	return vm
+}
