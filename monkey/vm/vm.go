@@ -57,7 +57,7 @@ func (vm *VM) Run() error {
 			}
 		case code.OpAdd, code.OpSub, code.OpMul, code.OpDiv:
 			err := vm.executeBinaryOperation(op)
-			if err != nil {
+			if err != nil { 
 				return err
 			}
 		case code.OpPop:
