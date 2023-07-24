@@ -39,6 +39,7 @@ const (
 	OpSetLocal
 	OpGetBuiltin
 	OpClosure
+	OpGetFree
 )
 
 type Definition struct {
@@ -78,6 +79,7 @@ var definitions = map[Opcode]*Definition{
 	// 1. 常量池中的哪个位置找到要转换为闭包的*object.CompiledFunction
 	// 2. 栈中有多少自由变量要转移到即将创建的闭包中
 	OpClosure: {"OpClosure", []int{2, 1}},
+	OpGetFree: {"OpGetFree", []int{1}},
 }
 
 func Lookup(op byte) (*Definition, error) {
