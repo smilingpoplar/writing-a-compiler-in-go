@@ -474,6 +474,13 @@ func (vm *VM) callFunction(numArgs int) error {
 		return fmt.Errorf("calling non-function")
 	}
 
+	// compiler.go的Compile()在函数定义时（case *ast.FunctionLiteral）有参数个数（这里的fn.NumParameters），
+	// 在函数调用时（case *ast.CallExpression）有参数个数（这里的numArgs），检查这两个参数是否相等
+	if numArgs != fn.NumParameters {
+		return fmt.Errorf("wrong number of arguments: want=%d, got=%d",
+			fn.NumParameters, numArgs)
+	}
+
 	frame := NewFrame(fn, vm.sp-numArgs)
 	vm.pushFrame(frame)
 
