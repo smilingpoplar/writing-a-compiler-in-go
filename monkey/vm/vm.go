@@ -169,6 +169,7 @@ func (vm *VM) Run() error {
 				return err
 			}
 		case code.OpCall:
+			vm.currentFrame().ip += 1
 			fn, ok := vm.stack[vm.sp-1].(*object.CompiledFunction) // 执行栈顶的*object.CompiledFunction
 			if !ok {
 				return fmt.Errorf("calling non-function")
