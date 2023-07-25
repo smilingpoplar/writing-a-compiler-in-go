@@ -255,6 +255,11 @@ func (c *Compiler) Compile(node ast.Node) error {
 	case *ast.FunctionLiteral:
 		c.enterScope()
 
+		// 如果有let语句给函数字面量绑定了名称，现在这个名称进入了函数字面量的符号表
+		if node.Name != "" {
+			c.symbolTable.DefineFunctionName(node.Name)
+		}
+
 		for _, p := range node.Parameters {
 			c.symbolTable.Define(p.Value)
 		}
@@ -438,5 +443,7 @@ func (c *Compiler) loadSymbol(s Symbol) {
 		c.emit(code.OpGetBuiltin, s.Index)
 	case FreeScope:
 		c.emit(code.OpGetFree, s.Index)
+	case FunctionScope: // 来自`case *ast.Identifier`，函数自引用
+		c.emit(code.OpCurrentClosure)
 	}
 }
